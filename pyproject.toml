@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "easyquery-query-builder"
+version = "0.1.0"
+description = ""
+authors = ["Smolke <d.smolczynski1@gmail.com>"]
+readme = "README.md"
+packages = [{include = "easyquery_query_builder"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
