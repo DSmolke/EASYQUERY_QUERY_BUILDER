@@ -1,10 +1,10 @@
 import logging
-
 import pytest
+
 from easyvalid_data_validator.customexceptions.array import InvalidArgumentType
 from easyvalid_data_validator.customexceptions.common import ValidationError
 
-from easyquery_query_builder.queries import ReadQueryBuilder, Query, ReadQuery, ReadQueryWithJoinBuilder, \
+from easyquery_query_builder.queries import ReadQueryBuilder, ReadQuery, ReadQueryWithJoinBuilder, \
     ReadQueryWithJoins
 
 
@@ -12,7 +12,6 @@ class TestReadQuery:
     # ----------------------------------------------------------------------
     # Clear cases
     # ----------------------------------------------------------------------
-
     def test_read_query_with_default_values(self, default_read_query) -> None:
         with pytest.raises(ValueError) as e:
             default_read_query.parse()
@@ -57,7 +56,6 @@ class TestReadQuery:
     # ----------------------------------------------------------------------
     # Cases with invalid structure
     # ----------------------------------------------------------------------
-
     def test_read_query_with_valid_select_but_without_from_and_with_other_statements(
             self, valid_select_but_invalid_structure) -> None:
         with pytest.raises(ValueError) as e:
@@ -89,7 +87,6 @@ class TestReadQuery:
     # ----------------------------------------------------------------------
     # Cases with invalid types provided as arguments
     # ----------------------------------------------------------------------
-
     def test_read_query_with_invalid_select_argument(self, invalid_select_argument) -> None:
         with pytest.raises(Exception) as e:
             invalid_select_argument.parse()
@@ -150,7 +147,11 @@ class TestReadQueryWithJoins:
         assert e.type == ValidationError or InvalidArgumentType
         assert e.value.args[0] == 'Invalid array - some or all members have unexpected type' or 'Invalid elements argument type'
 
+
 class TestReadQueryBuilder:
+    # ----------------------------------------------------------------------
+    # Valid cases, then valid case - invalid case ....   by statements
+    # ----------------------------------------------------------------------
     def test_builder_initialisation_without_query(self) -> None:
         assert ReadQueryBuilder().query.__dict__ == {
             'from_': '',
@@ -172,6 +173,10 @@ class TestReadQueryBuilder:
             'where_': '',
             'order_by_': ''
         }
+
+    # ----------------------------------------------------------------------
+    # by statements
+    # ----------------------------------------------------------------------
 
     def test_adding_valid_select_statement(self) -> None:
         assert ReadQueryBuilder().add_select_statement("*").query.__dict__ == {
@@ -296,9 +301,10 @@ class TestReadQueryBuilder:
         assert isinstance(result_query, ReadQuery)
         assert result_query.parse() == "select * from cars"
 
+
 class TestReadQueryWithJoinsBuilder:
     # ----------------------------------------------------------------------
-    # Valid cases
+    # Valid - invalid - valid
     # ----------------------------------------------------------------------
     def test_valid_join_statement(self) -> None:
         assert ReadQueryWithJoinBuilder().add_joins_statement([["teams", "t1", "t1.id = players.team_id"]]).query.__dict__ == {
@@ -326,7 +332,3 @@ class TestReadQueryWithJoinsBuilder:
             .add_joins_statement([["teams", "t1", "t1.id = players.team_id"]]).build()
         assert isinstance(result_query, ReadQueryWithJoins)
         assert result_query.parse() == 'select * from players join teams as t1 on t1.id = players.team_id'
-
-
-
-
