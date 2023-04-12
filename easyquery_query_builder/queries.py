@@ -185,6 +185,3 @@ class ReadQueryWithJoinsBuilder(ReadQueryBuilder):
     def build(self) -> ReadQueryWithJoins:
         """ Builds query based on all operations that were made """
         return self.query
-
-
-ReadQueryBuilder().add_select_statement('*').add_from_statement('cars').add_where_statement('production_year > 2020')
