@@ -123,7 +123,7 @@ class ReadQueryBuilder:
         data = {"new_from": new_from}
         constraints = {"new_from": {Constraint.IS_TYPE: str}}
         validate_json_data(data, constraints)
-        self.query.from_ = f"{new_from}"
+        self.query.from_ = new_from
         return self
 
     def add_where_statement(self, new_where: str) -> Self:
@@ -131,7 +131,7 @@ class ReadQueryBuilder:
         data = {"new_where": new_where}
         constraints = {"new_where": {Constraint.IS_TYPE: str}}
         validate_json_data(data, constraints)
-        self.query.where_ = f"{new_where}"
+        self.query.where_ = new_where
         return self
 
     def add_group_by_statement(self, new_group_by: str) -> Self:
@@ -139,7 +139,7 @@ class ReadQueryBuilder:
         data = {"new_group_by": new_group_by}
         constraints = {"new_group_by": {Constraint.IS_TYPE: str}}
         validate_json_data(data, constraints)
-        self.query.group_by_ = f"{new_group_by}"
+        self.query.group_by_ = new_group_by
         return self
 
     def add_having_statement(self, new_having: str) -> Self:
@@ -147,7 +147,7 @@ class ReadQueryBuilder:
         data = {"new_having": new_having}
         constraints = {"new_having": {Constraint.IS_TYPE: str}}
         validate_json_data(data, constraints)
-        self.query.having_ = f"{new_having}"
+        self.query.having_ = new_having
         return self
 
     def add_order_by_statement(self, new_order_by: str) -> Self:
@@ -155,7 +155,7 @@ class ReadQueryBuilder:
         data = {"new_order_by": new_order_by}
         constraints = {"new_order_by": {Constraint.IS_TYPE: str}}
         validate_json_data(data, constraints)
-        self.query.order_by_ = f"{new_order_by}"
+        self.query.order_by_ = new_order_by
         return self
 
     def build(self) -> ReadQuery:
