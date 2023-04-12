@@ -4,7 +4,7 @@ import pytest
 from easyvalid_data_validator.customexceptions.array import InvalidArgumentType
 from easyvalid_data_validator.customexceptions.common import ValidationError
 
-from easyquery_query_builder.queries import ReadQueryBuilder, ReadQuery, ReadQueryWithJoinBuilder, \
+from easyquery_query_builder.queries import ReadQueryBuilder, ReadQuery, ReadQueryWithJoinsBuilder, \
     ReadQueryWithJoins
 
 
@@ -307,14 +307,14 @@ class TestReadQueryWithJoinsBuilder:
     # Valid - invalid - valid
     # ----------------------------------------------------------------------
     def test_valid_join_statement(self) -> None:
-        assert ReadQueryWithJoinBuilder().add_joins_statement([["teams", "t1", "t1.id = players.team_id"]]).query.__dict__ == {
+        assert ReadQueryWithJoinsBuilder().add_joins_statement([["teams", "t1", "t1.id = players.team_id"]]).query.__dict__ == {
             'select_': '',
             'from_': '',
             'group_by_': '',
             'having_': '',
             'where_': '',
             'order_by_': '',
-            '_joins': [["teams", "t1", "t1.id = players.team_id"]]
+            'joins_': [["teams", "t1", "t1.id = players.team_id"]]
         }
 
     @pytest.mark.parametrize("joins_statement", [
@@ -322,11 +322,11 @@ class TestReadQueryWithJoinsBuilder:
     ])
     def test_join_statement_with_invalid_argument(self, joins_statement) -> None:
         with pytest.raises(InvalidArgumentType) as e:
-            assert ReadQueryWithJoinBuilder().add_joins_statement(joins_statement)
+            assert ReadQueryWithJoinsBuilder().add_joins_statement(joins_statement)
         assert e.value.args[0] == 'Invalid elements argument type'
 
     def test_read_query_with_join_build(self) -> None:
-        result_query = ReadQueryWithJoinBuilder()\
+        result_query = ReadQueryWithJoinsBuilder()\
             .add_select_statement("*")\
             .add_from_statement('players')\
             .add_joins_statement([["teams", "t1", "t1.id = players.team_id"]]).build()

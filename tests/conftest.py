@@ -124,11 +124,11 @@ def invalid_order_by_argument(request):
 # ----------------------------------------------------------------------
 @pytest.fixture
 def valid_select_from_and_join_data():
-    return ReadQueryWithJoins(select_="*", from_="teams", _joins=[["cars", "c", "teams.id = c.id"]])
+    return ReadQueryWithJoins(select_="*", from_="teams", joins_=[["cars", "c", "teams.id = c.id"]])
 
 @pytest.fixture
 def valid_select_from_and_multiple_join_data():
-    return ReadQueryWithJoins(select_="*", from_="teams", _joins=[["cars", "c", "teams.id = c.id"], ["players", "p", "teams.id = p.id"]])
+    return ReadQueryWithJoins(select_="*", from_="teams", joins_=[["cars", "c", "teams.id = c.id"], ["players", "p", "teams.id = p.id"]])
 
 # ----------------------------------------------------------------------
 # Cases with invalid types provided as arguments
@@ -137,7 +137,7 @@ def valid_select_from_and_multiple_join_data():
     (('teams', 't', 'desc'),), [('teams', 't', 'desc')]
 ])
 def valid_select_from_and_invalid_join_argument(request):
-    return ReadQueryWithJoins(select_="*", from_="cars", _joins=request.param)
+    return ReadQueryWithJoins(select_="*", from_="cars", joins_=request.param)
 # ----------------------------------------------------------------------
 # / READ_QUERY_WITH_JOIN
 # ----------------------------------------------------------------------

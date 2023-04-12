@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "easyquery_query_builder"}]
 
 [tool.poetry.dependencies]
-python = "*"
+python = "^3.11"
 easyvalid-data-validator = "^0.1.1"
 
 

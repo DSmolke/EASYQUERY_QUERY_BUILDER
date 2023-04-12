@@ -9,6 +9,7 @@ from easyvalid_data_validator.constraints import Constraint
 logging.basicConfig(level=logging.INFO)
 
 class Query(ABC):
+
     @abstractmethod
     def parse(self) -> str:
         pass
@@ -59,9 +60,9 @@ class ReadQuery:
 
 class ReadQueryWithJoins(ReadQuery):
     """ Subclass of ReadQuery which implements joins """
-    def __init__(self, select_="", from_="", where_="", group_by_="", having_="", order_by_="", _joins=""):
+    def __init__(self, select_="", from_="", where_="", group_by_="", having_="", order_by_="", joins_=""):
         super().__init__(select_, from_, where_, group_by_, having_, order_by_)
-        self._joins: list[list[str] | str] = _joins
+        self.joins_: list[list[str] | str] = joins_
 
     def parse(self) -> str:
         """ Creates sql query expression can be extended with join statements using fields provided in instance """
@@ -75,7 +76,7 @@ class ReadQueryWithJoins(ReadQuery):
             "group_by_": {Constraint.IS_TYPE: str},
             "having_": {Constraint.IS_TYPE: str},
             "order_by_": {Constraint.IS_TYPE: str},
-            "_joins": {Constraint.IS_TYPE: list, Constraint.ARRAY_MEMBERS_TYPE: list}
+            "joins_": {Constraint.IS_TYPE: list, Constraint.ARRAY_MEMBERS_TYPE: list}
         }
         validate_json_data(query_data, constraints)
 
@@ -88,7 +89,7 @@ class ReadQueryWithJoins(ReadQuery):
             raise ValueError("You cannot use having block without declaring group by block")
 
         # concatenation of joins
-        joins_exp = " ".join([f"join {table} as {alias} on {conditions}" for table, alias, conditions in self._joins])
+        joins_exp = " ".join([f"join {table} as {alias} on {conditions}" for table, alias, conditions in self.joins_])
 
         # creation of sql query
         statement = f"{f'select {self.select_}' if self.select_ else ''}" \
@@ -162,7 +163,7 @@ class ReadQueryBuilder:
         return self.query
 
 
-class ReadQueryWithJoinBuilder(ReadQueryBuilder):
+class ReadQueryWithJoinsBuilder(ReadQueryBuilder):
     """
         Builder that is subclass of ReadQueryBuilder used to create new ReadQueriesWithJoin
         'from scratch' or modify existing ones to desired form
@@ -178,5 +179,5 @@ class ReadQueryWithJoinBuilder(ReadQueryBuilder):
         data = {"new_joins": new_joins}
         constraints = {"new_joins": {Constraint.IS_TYPE: list, Constraint.ARRAY_MEMBERS_TYPE: list}}
         validate_json_data(data, constraints)
-        self.query._joins = new_joins
+        self.query.joins_ = new_joins
         return self
