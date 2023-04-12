@@ -175,7 +175,7 @@ class ReadQueryWithJoinsBuilder(ReadQueryBuilder):
             self.query = query
 
     def add_joins_statement(self, new_joins: str) -> Self:
-        """ Ads new joins arguments provided by user. Basic validation of argument is performed"""
+        """ Ads new joins arguments provided by user: [[<table_name>, <table_alias>, <join_condition>], ...]. Basic validation of argument is performed"""
         data = {"new_joins": new_joins}
         constraints = {"new_joins": {Constraint.IS_TYPE: list, Constraint.ARRAY_MEMBERS_TYPE: list}}
         validate_json_data(data, constraints)
