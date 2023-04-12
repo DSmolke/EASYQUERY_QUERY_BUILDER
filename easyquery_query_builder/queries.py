@@ -181,3 +181,10 @@ class ReadQueryWithJoinsBuilder(ReadQueryBuilder):
         validate_json_data(data, constraints)
         self.query.joins_ = new_joins
         return self
+
+    def build(self) -> ReadQueryWithJoins:
+        """ Builds query based on all operations that were made """
+        return self.query
+
+
+ReadQueryBuilder().add_select_statement('*').add_from_statement('cars').add_where_statement('production_year > 2020')
