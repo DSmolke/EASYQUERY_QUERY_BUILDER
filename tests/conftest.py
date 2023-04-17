@@ -1,7 +1,9 @@
 import logging
 import pytest
 
-from easyquery_query_builder.queries import ReadQuery, ReadQueryWithJoins
+
+from easyquery_query_builder.queries.read_query import ReadQuery
+from easyquery_query_builder.queries.read_query_with_joins import ReadQueryWithJoins
 
 logging.basicConfig(level=logging.INFO)
 

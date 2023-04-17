@@ -13,6 +13,10 @@ Using poetry:
 ```bash
   poetry add easyquery-query-builder
 ```
+Using pipenv:
+```bash
+  pipenv install easyquery-query-builder
+```
 
 
     
@@ -27,25 +31,33 @@ You are able to run tests on your own by using cloning repository and using it's
   git clone https://github.com/DSmolke/EASYQUERY_QUERY_BUILDER.git
   cd EASYQUERY_QUERY_BUILDER
 ```
-### 2. Set up and enter virtual environment using poetry
+### 2. Run tests using:
+#### pip:
+```bash
+  pip install pytest
+  pip install coverage
+  pip install easyvalid-data-validator
+  
+  pytest -vv
+```
 
-* if you don't have poetry, first install it:
+#### poetry:
 ```bash
   pip install poetry
-```
-* install environment and enter shell:
-```bash
   poetry update
   poetry shell
+  poetry run pytest -vv
 ```
 (poetry update is used due to some issue that I faced with newest Python version)
 
-### 3. Run tests using pytest
+#### pipenv:
 ```bash
-  poetry run pytest -vv
+   pip install pipenv
+   pipenv shell
+   pipenv run pytest -vv
 ```
 
-### 4. Access coverage report
+### 3. Access coverage report
 
 If you haven't done step 1, start from here:
 ```bash
@@ -60,14 +72,11 @@ Then use this command to change branch
 You should be able to see htmlcov directory. Enter it and open index.html file to see full coverage report.
 
 
-
-
-
-
 ## Basic usage
 Let's say we need to prepare query where we ask database for all records from drivers table, joined with licenses table on license id:
 ```
-from easyquery_query_builder.queries import ReadQueryWithJoinBuilder, ReadQueryWithJoins
+from easyquery_query_builder.queries.read_query_with_joins import ReadQueryWithJoins
+from easyquery_query_builder.queries.read_query_with_joins_builder import ReadQueryWithJoinsBuilder
 
 query: ReadQueryWithJoins = ReadQueryWithJoinBuilder() \
     .add_select_statement('*') \
